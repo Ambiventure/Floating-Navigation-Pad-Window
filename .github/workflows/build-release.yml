@@ -1,0 +1,64 @@
+name: Build & Release Windows EXE
+
+on:
+  push:
+    tags:
+      - 'v*'
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  build-windows:
+    runs-on: windows-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Build standalone EXE with PyInstaller
+        run: |
+          python -m PyInstaller --onefile --noconsole --name "NavPad-v2.16" navpad.py
+
+      - name: Upload artifact for workflow runs
+        uses: actions/upload-artifact@v4
+        with:
+          name: NavPad-v2.16-windows-exe
+          path: dist/NavPad-v2.16.exe
+
+      - name: Create GitHub Release on Tag
+        if: startsWith(github.ref, 'refs/tags/')
+        uses: softprops/action-gh-release@v2
+        with:
+          name: Floating NavPad v2.16
+          body: |
+            ## Floating NavPad v2.16 Release
+            
+            ### ✨ What's New in v2.16:
+            - **Watchdog Topmost Enforcer**: Automatic anti-interference recovery preventing PiP loss when Chrome context menus or system popups appear.
+            - **Updated Column 4 Shortcuts**:
+              - Row 0: `Backspace` (BKSP)
+              - Row 1: `Enter` (ENT)
+              - Row 2: `Alt + S` (A+S)
+              - Row 3: `Alt + Shift + S` (A+SS)
+            - **Reset to Default**: Instant single-click right-click option to revert customized keys.
+            - **Assistive Touch Minimized Mode**: Ultra-low-profile media floating pill.
+            - **Direct Win32 Event Dispatch**: Low-latency inputs that never steal active application focus.
+            
+            ### ⬇️ Download
+            Download **`NavPad-v2.16.exe`** below and run directly on Windows 10/11 (No Python installation required!).
+          files: |
+            dist/NavPad-v2.16.exe

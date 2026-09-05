@@ -6,3 +6,13 @@ coverage/
 *.log
 .env*
 !.env.example
+
+# Python & PyInstaller
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.spec
+.venv/
+venv/
+navpad_config.json

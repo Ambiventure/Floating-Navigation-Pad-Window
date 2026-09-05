@@ -1,6 +1,10 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { ChevronUp, ChevronDown, ChevronLeft, ChevronRight, X, Terminal, Copy, Check, ExternalLink, Maximize2, Plus, Play, Pause, VolumeX, Minus } from 'lucide-react';
+import { 
+  ChevronUp, ChevronDown, ChevronLeft, ChevronRight, X, Terminal, Copy, Check, 
+  ExternalLink, Maximize2, Plus, Play, Pause, VolumeX, Minus, Download, 
+  Github, FolderDown, Image as ImageIcon, FileText, Sparkles, Layers, ShieldCheck, ArrowUpRight 
+} from 'lucide-react';
 
 const PYTHON_CODE = `import tkinter as tk
 from tkinter import simpledialog
@@ -12,6 +16,9 @@ import ctypes
 import sys
 import json
 import math
+
+APP_NAME = "Floating NavPad"
+APP_VERSION = "2.16"
 
 # Configuration
 if getattr(sys, 'frozen', False):
@@ -310,13 +317,13 @@ class ThemeWindow:
     def __init__(self, navpad):
         self.navpad = navpad
         self.win = tk.Toplevel(navpad.root)
-        self.win.title("Theme Customizer")
+        self.win.title(f"NavPad Theme Engine v{APP_VERSION}")
         self.win.geometry("400x750")
         self.win.configure(bg="#1a1a1a")
         self.win.attributes('-topmost', True)
         self.win.focus_force()
 
-        tk.Label(self.win, text="THEME ENGINE", bg="#1a1a1a", fg="white", font=("Segoe UI", 16, "bold")).pack(pady=10)
+        tk.Label(self.win, text=f"THEME ENGINE v{APP_VERSION}", bg="#1a1a1a", fg="white", font=("Segoe UI", 16, "bold")).pack(pady=10)
         
         # Scrollable area
         canvas = tk.Canvas(self.win, bg="#1a1a1a", highlightthickness=0)
@@ -528,7 +535,7 @@ class ThemeWindow:
 class FloatingNavPad:
     def __init__(self, root):
         self.root = root
-        self.root.title("NavPad Pro")
+        self.root.title(f"NavPad Pro v{APP_VERSION}")
         self.zoom = 1.0
         self.alpha = 0.85
         self.is_expanded = False
@@ -714,7 +721,8 @@ class FloatingNavPad:
                 "alpha": self.alpha,
                 "theme": self.theme,
                 "button_positions": self.button_positions,
-                "layout_mode": self.layout_mode
+                "layout_mode": self.layout_mode,
+                "version": APP_VERSION
             }
             with open(CONFIG_FILE, "w") as f:
                 json.dump(data, f)
@@ -1239,10 +1247,54 @@ if __name__ == "__main__":
     app = FloatingNavPad(root)
     root.mainloop()`;
 
+const BATCH_CODE = `@echo off
+echo ===================================================
+echo     Floating NavPad v2.16 - Windows EXE Builder
+echo ===================================================
+echo.
+
+echo [1/3] Checking Python installation...
+python --version >nul 2>&1
+if %errorlevel% neq 0 (
+    echo Error: Python was not found in your system PATH!
+    echo Please download and install Python from https://www.python.org/downloads/
+    echo Make sure to check "Add Python to PATH" during installation.
+    pause
+    exit /b 1
+)
+
+echo [2/3] Installing dependencies (pyautogui, pyinstaller)...
+python -m pip install --upgrade pip
+python -m pip install -r requirements.txt
+if %errorlevel% neq 0 (
+    echo Error installing dependencies.
+    pause
+    exit /b 1
+)
+
+echo.
+echo [3/3] Building standalone Windows EXE...
+python -m PyInstaller --onefile --noconsole --name "NavPad-v2.16" navpad.py
+
+if exist "dist\\NavPad-v2.16.exe" (
+    echo.
+    echo ===================================================
+    echo  SUCCESS! NavPad-v2.16.exe is ready!
+    echo  Location: dist\\NavPad-v2.16.exe
+    echo ===================================================
+    explorer.exe /select,"dist\\NavPad-v2.16.exe"
+) else (
+    echo.
+    echo Build failed. Please check the terminal logs above.
+)
+
+pause`;
+
 export default function App() {
   const [copied, setCopied] = useState(false);
   const [isExpanded, setIsExpanded] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
+  const [activeTab, setActiveTab] = useState<'preview' | 'screenshots' | 'guide'>('preview');
 
   const handleCopy = () => {
     navigator.clipboard.writeText(PYTHON_CODE);
@@ -1250,248 +1302,491 @@ export default function App() {
     setTimeout(() => setCopied(false), 2000);
   };
 
+  const handleDownloadPython = () => {
+    const blob = new Blob([PYTHON_CODE], { type: 'text/x-python' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'navpad.py';
+    a.click();
+    URL.revokeObjectURL(url);
+  };
+
+  const handleDownloadBatch = () => {
+    const blob = new Blob([BATCH_CODE], { type: 'application/x-bat' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'build_exe.bat';
+    a.click();
+    URL.revokeObjectURL(url);
+  };
+
   return (
-    <div className="min-h-screen bg-[#0a0a0a] text-zinc-300 font-sans selection:bg-emerald-500/30">
-      {/* Background Decoration */}
+    <div className="min-h-screen bg-[#07090e] text-zinc-300 font-sans selection:bg-emerald-500/30">
+      {/* Subtle Background Glows */}
       <div className="fixed inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-emerald-500/10 blur-[120px] rounded-full" />
-        <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-blue-500/10 blur-[120px] rounded-full" />
+        <div className="absolute top-[-10%] left-[-10%] w-[45%] h-[45%] bg-emerald-500/10 blur-[130px] rounded-full" />
+        <div className="absolute bottom-[-10%] right-[-10%] w-[45%] h-[45%] bg-blue-500/10 blur-[130px] rounded-full" />
       </div>
 
-      <main className="relative z-10 max-w-6xl mx-auto px-6 py-12 lg:py-24 grid lg:grid-cols-2 gap-16 items-center">
-        
-        {/* Left Content: Instructions */}
-        <div className="space-y-8">
-          <div className="space-y-4">
-            <h1 className="text-5xl lg:text-7xl font-bold tracking-tighter text-white">
-              NavPad <span className="text-emerald-400">Pro</span>
-            </h1>
-            <p className="text-xl text-zinc-400 leading-relaxed max-w-md">
-              A collapsible, Assistive Touch-style automation tool for Windows. Media, navigation, and custom macros at your fingertips.
-            </p>
-          </div>
-
-          <div className="space-y-6">
-            <div className="flex items-start gap-4 group">
-              <div className="mt-1 p-2 rounded-lg bg-zinc-900 border border-zinc-800 group-hover:border-emerald-500/50 transition-colors">
-                <Terminal className="w-5 h-5 text-emerald-400" />
-              </div>
-              <div>
-                <h3 className="font-semibold text-white">One-Click Setup</h3>
-                <code className="text-sm bg-zinc-900 px-2 py-1 rounded text-emerald-300 border border-zinc-800 mt-2 block w-fit">
-                  pip install pyautogui
-                </code>
-              </div>
+      {/* Top Navigation Bar */}
+      <header className="relative z-20 border-b border-zinc-800/80 bg-[#0b0e14]/80 backdrop-blur-md px-6 py-4">
+        <div className="max-w-6xl mx-auto flex flex-wrap items-center justify-between gap-4">
+          <div className="flex items-center gap-3">
+            <div className="w-8 h-8 rounded-lg bg-emerald-500/20 border border-emerald-500/40 flex items-center justify-center font-bold text-emerald-400 text-sm">
+              NP
             </div>
-
-            <div className="flex items-start gap-4 group">
-              <div className="mt-1 p-2 rounded-lg bg-zinc-900 border border-zinc-800 group-hover:border-emerald-500/50 transition-colors">
-                <Maximize2 className="w-5 h-5 text-emerald-400" />
-              </div>
-              <div>
-                <h3 className="font-semibold text-white">Collapsible Interface</h3>
-                <p className="text-sm text-zinc-500">Minimize to a subtle dot when not in use. Expand instantly for full control.</p>
+            <div>
+              <div className="flex items-center gap-2">
+                <span className="font-bold text-white tracking-tight">Floating NavPad</span>
+                <span className="px-2 py-0.5 rounded text-[11px] font-mono font-bold bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">
+                  v2.16
+                </span>
+                <span className="hidden sm:inline-block px-2 py-0.5 rounded text-[11px] font-medium bg-zinc-800 text-zinc-400 border border-zinc-700">
+                  Windows 10 / 11
+                </span>
               </div>
             </div>
           </div>
 
-          <div className="pt-4 flex flex-wrap gap-4">
-            <button 
-              onClick={handleCopy}
-              className="flex items-center gap-2 px-8 py-4 bg-emerald-500 hover:bg-emerald-400 text-black font-bold rounded-full transition-all active:scale-95 shadow-lg shadow-emerald-500/20"
+          <div className="flex items-center gap-2">
+            <button
+              onClick={() => setActiveTab('preview')}
+              className={`px-3.5 py-1.5 rounded-lg text-xs font-semibold transition-colors flex items-center gap-1.5 ${
+                activeTab === 'preview' 
+                  ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/40' 
+                  : 'text-zinc-400 hover:text-white hover:bg-zinc-800'
+              }`}
             >
-              {copied ? <Check className="w-5 h-5" /> : <Copy className="w-5 h-5" />}
-              {copied ? 'Copied Script' : 'Copy Python Script'}
+              <Layers className="w-3.5 h-3.5" />
+              Interactive Pad
             </button>
-            
-            <a 
-              href="https://www.python.org/downloads/" 
-              target="_blank" 
-              rel="noreferrer"
-              className="flex items-center gap-2 px-8 py-4 bg-zinc-800 hover:bg-zinc-700 text-white font-bold rounded-full transition-all border border-white/5"
+            <button
+              onClick={() => setActiveTab('screenshots')}
+              className={`px-3.5 py-1.5 rounded-lg text-xs font-semibold transition-colors flex items-center gap-1.5 ${
+                activeTab === 'screenshots' 
+                  ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/40' 
+                  : 'text-zinc-400 hover:text-white hover:bg-zinc-800'
+              }`}
             >
-              Download Python
-            </a>
-          </div>
-
-          {/* Setup Guide */}
-          <div className="mt-12 p-6 bg-zinc-900/50 border border-zinc-800 rounded-2xl space-y-4">
-            <h3 className="text-lg font-bold text-white flex items-center gap-2">
-              <Terminal className="w-5 h-5 text-emerald-400" />
-              Quick Start Guide
-            </h3>
-            <ul className="space-y-3 text-sm">
-              <li className="flex gap-3">
-                <span className="text-emerald-500 font-mono">01.</span>
-                <span>Install Python and run <code className="text-emerald-400">pip install pyautogui</code>.</span>
-              </li>
-              <li className="flex gap-3">
-                <span className="text-emerald-500 font-mono">02.</span>
-                <span>Save the script as <code className="text-emerald-400">navpad.py</code> and run it.</span>
-              </li>
-              <li className="flex gap-3">
-                <span className="text-emerald-500 font-mono">03.</span>
-                <span>Customize every detail — from corners to colors — in the THEME menu.</span>
-              </li>
-              <li className="flex gap-3 pt-2 border-t border-zinc-800">
-                <span className="text-emerald-500 font-mono">EXE.</span>
-                <span>Build EXE: <code className="text-emerald-400">pyinstaller --onefile --noconsole navpad.py</code></span>
-              </li>
-            </ul>
+              <ImageIcon className="w-3.5 h-3.5" />
+              GitHub Screenshots
+            </button>
+            <button
+              onClick={() => setActiveTab('guide')}
+              className={`px-3.5 py-1.5 rounded-lg text-xs font-semibold transition-colors flex items-center gap-1.5 ${
+                activeTab === 'guide' 
+                  ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/40' 
+                  : 'text-zinc-400 hover:text-white hover:bg-zinc-800'
+              }`}
+            >
+              <Github className="w-3.5 h-3.5" />
+              EXE & Release Guide
+            </button>
           </div>
         </div>
+      </header>
 
-        {/* Right Content: Interactive Preview */}
-        <div className="relative flex justify-center items-center h-[500px]">
-          <AnimatePresence mode="wait">
-            {!isExpanded ? (
-              <motion.div
-                key="dot"
-                layoutId="pad"
-                initial={{ scale: 0.8, opacity: 0 }}
-                animate={{ scale: 1, opacity: 1 }}
-                exit={{ scale: 1.2, opacity: 0 }}
-                className="flex items-center gap-1.5 p-1.5 bg-zinc-900 border-2 border-zinc-700 rounded-2xl shadow-2xl shadow-white/5"
-              >
-                {/* Minimized Dot (Leftmost) */}
-                <motion.button
-                  whileHover={{ scale: 1.05, backgroundColor: '#1f1f23' }}
-                  whileTap={{ scale: 0.95 }}
-                  onClick={() => setIsExpanded(true)}
-                  className="w-11 h-11 rounded-xl flex items-center justify-center cursor-pointer text-white"
-                  title="Expand NavPad"
-                >
-                  <div className="w-3.5 h-3.5 bg-white rounded-full animate-pulse" />
-                </motion.button>
+      {/* Main Container */}
+      <main className="relative z-10 max-w-6xl mx-auto px-6 py-10 lg:py-16">
+        
+        {/* Tab 1: Interactive Preview (Live Simulator) */}
+        {activeTab === 'preview' && (
+          <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+            
+            {/* Left Content: Instructions & Quick Actions */}
+            <div className="space-y-6">
+              <div className="space-y-3">
+                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+                  <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />
+                  Self-Healing Topmost Watchdog Active
+                </div>
+                <h1 className="text-4xl lg:text-6xl font-extrabold tracking-tight text-white leading-tight">
+                  NavPad <span className="text-emerald-400">Pro</span> v2.16
+                </h1>
+                <p className="text-lg text-zinc-400 leading-relaxed">
+                  Always-on-top, picture-in-picture automation controller for Windows. Trigger keystrokes, media actions, and macros without stealing application focus.
+                </p>
+              </div>
 
-                {/* Left Arrow */}
-                <motion.button
-                  whileHover={{ scale: 1.05, backgroundColor: '#1f1f23' }}
-                  whileTap={{ scale: 0.95 }}
-                  className="w-11 h-11 rounded-xl flex items-center justify-center cursor-pointer text-white"
-                  title="Left Arrow"
-                >
-                  <ChevronLeft className="w-5 h-5" />
-                </motion.button>
-
-                {/* Play/Pause Space Bar */}
-                <motion.button
-                  whileHover={{ scale: 1.05, backgroundColor: '#1f1f23' }}
-                  whileTap={{ scale: 0.95 }}
-                  onClick={() => setIsPlaying(!isPlaying)}
-                  className="w-11 h-11 rounded-xl flex items-center justify-center cursor-pointer text-white"
-                  title="Play / Pause"
-                >
-                  {isPlaying ? <Pause className="w-4 h-4 fill-current text-white" /> : <Play className="w-4 h-4 fill-current text-white" />}
-                </motion.button>
-
-                {/* Right Arrow */}
-                <motion.button
-                  whileHover={{ scale: 1.05, backgroundColor: '#1f1f23' }}
-                  whileTap={{ scale: 0.95 }}
-                  className="w-11 h-11 rounded-xl flex items-center justify-center cursor-pointer text-white"
-                  title="Right Arrow"
-                >
-                  <ChevronRight className="w-5 h-5" />
-                </motion.button>
-              </motion.div>
-            ) : (
-              <motion.div 
-                key="expanded"
-                layoutId="pad"
-                initial={{ scale: 0.9, opacity: 0 }}
-                animate={{ scale: 1, opacity: 1 }}
-                exit={{ scale: 0.9, opacity: 0 }}
-                className="relative w-72 h-[520px] bg-[#121212] rounded-[40px] border-2 border-zinc-800 shadow-2xl flex flex-col items-center justify-center p-6"
-              >
-                <div className="grid grid-cols-4 gap-2 w-full mb-3">
-                  {/* Row 0 */}
-                  <PreviewButton label="Z-" color="text-red-400" borderColor="border-zinc-800" />
-                  <PreviewButton icon={<ChevronUp className="w-5 h-5" />} color="text-emerald-400" borderColor="border-zinc-800" />
-                  <PreviewButton label="Z+" color="text-blue-400" borderColor="border-zinc-800" />
-                  <PreviewButton label="BKSP" color="text-orange-400" borderColor="border-zinc-800" />
-
-                  {/* Row 1 */}
-                  <PreviewButton icon={<ChevronLeft className="w-5 h-5" />} color="text-emerald-400" borderColor="border-zinc-800" />
-                  <div className="contents cursor-pointer" onClick={() => setIsPlaying(!isPlaying)}>
-                    <PreviewButton icon={isPlaying ? <Pause className="w-5 h-5 fill-current" /> : <Play className="w-5 h-5 fill-current" />} color="text-white" borderColor="border-zinc-800" />
+              {/* Column 4 Modifications Notice */}
+              <div className="p-4 rounded-xl bg-zinc-900/70 border border-emerald-500/30 space-y-2">
+                <div className="flex items-center gap-2 text-xs font-bold text-emerald-400 uppercase tracking-wider">
+                  <Sparkles className="w-4 h-4" />
+                  Column 4 Shortcuts Configured
+                </div>
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 text-xs font-mono">
+                  <div className="p-2 rounded bg-black/40 border border-zinc-800">
+                    <span className="text-zinc-500 block text-[10px]">ROW 1</span>
+                    <span className="text-orange-400 font-bold">BKSP</span>
                   </div>
-                  <PreviewButton icon={<ChevronRight className="w-5 h-5" />} color="text-emerald-400" borderColor="border-zinc-800" />
-                  <PreviewButton label="ENT" color="text-orange-400" borderColor="border-zinc-800" />
+                  <div className="p-2 rounded bg-black/40 border border-zinc-800">
+                    <span className="text-zinc-500 block text-[10px]">ROW 2</span>
+                    <span className="text-orange-400 font-bold">ENT</span>
+                  </div>
+                  <div className="p-2 rounded bg-black/40 border border-zinc-800">
+                    <span className="text-zinc-500 block text-[10px]">ROW 3</span>
+                    <span className="text-orange-400 font-bold">A+S</span>
+                  </div>
+                  <div className="p-2 rounded bg-black/40 border border-zinc-800">
+                    <span className="text-zinc-500 block text-[10px]">ROW 4</span>
+                    <span className="text-purple-400 font-bold">A+SS</span>
+                  </div>
+                </div>
+              </div>
 
-                  {/* Row 2 */}
-                  <PreviewButton label="A-" color="text-orange-400" borderColor="border-zinc-800" />
-                  <PreviewButton icon={<ChevronDown className="w-5 h-5" />} color="text-emerald-400" borderColor="border-zinc-800" />
-                  <PreviewButton label="A+" color="text-orange-400" borderColor="border-zinc-800" />
-                  <PreviewButton label="A+S" color="text-orange-400" borderColor="border-zinc-800" />
+              {/* Download Buttons Group */}
+              <div className="pt-2 flex flex-wrap gap-3">
+                <button 
+                  onClick={handleDownloadPython}
+                  className="flex items-center gap-2 px-6 py-3 bg-emerald-500 hover:bg-emerald-400 text-black font-bold rounded-xl transition-all active:scale-95 shadow-lg shadow-emerald-500/20 text-sm"
+                >
+                  <Download className="w-4 h-4" />
+                  Download navpad.py
+                </button>
 
-                  {/* Row 3: Custom Mappable Buttons Row 1 (1: Print Screen, 2: Escape, 3: Win+Alt, 4: Alt+Shift+S) */}
-                  <PreviewButton label="PRT" color="text-purple-400" borderColor="border-zinc-800" />
-                  <PreviewButton label="ESC" color="text-purple-400" borderColor="border-zinc-800" />
-                  <PreviewButton label="W+A" color="text-purple-400" borderColor="border-zinc-800" />
-                  <PreviewButton label="A+SS" color="text-purple-400" borderColor="border-zinc-800" />
+                <button 
+                  onClick={handleDownloadBatch}
+                  className="flex items-center gap-2 px-5 py-3 bg-zinc-800 hover:bg-zinc-700 text-white font-semibold rounded-xl transition-all border border-zinc-700 text-sm"
+                >
+                  <FolderDown className="w-4 h-4 text-emerald-400" />
+                  Download build_exe.bat
+                </button>
+                
+                <button 
+                  onClick={handleCopy}
+                  className="flex items-center gap-2 px-5 py-3 bg-zinc-900 hover:bg-zinc-800 text-zinc-300 font-medium rounded-xl transition-all border border-zinc-800 text-sm"
+                >
+                  {copied ? <Check className="w-4 h-4 text-emerald-400" /> : <Copy className="w-4 h-4" />}
+                  {copied ? 'Copied' : 'Copy Code'}
+                </button>
+              </div>
 
-                  {/* Row 4: Custom Mappable Buttons Row 2 (5: Win+Ctrl+Shift+B, 6: Ctrl+Esc, 7: F, 8: Win+D) */}
-                  <PreviewButton label="W+B" color="text-purple-400" borderColor="border-zinc-800" />
-                  <PreviewButton label="C+ES" color="text-purple-400" borderColor="border-zinc-800" />
-                  <PreviewButton label="F" color="text-purple-400" borderColor="border-zinc-800" />
-                  <PreviewButton label="W+D" color="text-purple-400" borderColor="border-zinc-800" />
+              {/* Quick Summary Pill */}
+              <div className="p-4 rounded-xl bg-zinc-900/40 border border-zinc-800 text-xs text-zinc-400 space-y-1">
+                <p>💡 <strong className="text-zinc-200">How it stays on top:</strong> NavPad v2.16 runs a 1.5s self-healing watchdog loop using Win32 API <code className="text-emerald-400">WS_EX_TOPMOST</code> & <code className="text-emerald-400">WS_EX_NOACTIVATE</code> to resist Chrome context menus.</p>
+              </div>
+            </div>
 
-                  {/* Row 5: Custom Mappable Buttons Row 3 (Copy, Paste, Select All, Cut) */}
-                  <PreviewButton label="CPY" color="text-purple-400" borderColor="border-zinc-800" />
-                  <PreviewButton label="PST" color="text-purple-400" borderColor="border-zinc-800" />
-                  <PreviewButton label="ALL" color="text-purple-400" borderColor="border-zinc-800" />
-                  <PreviewButton label="CUT" color="text-purple-400" borderColor="border-zinc-800" />
+            {/* Right Content: Interactive Preview Simulator */}
+            <div className="relative flex justify-center items-center min-h-[500px]">
+              <AnimatePresence mode="wait">
+                {!isExpanded ? (
+                  <motion.div
+                    key="dot"
+                    layoutId="pad"
+                    initial={{ scale: 0.8, opacity: 0 }}
+                    animate={{ scale: 1, opacity: 1 }}
+                    exit={{ scale: 1.2, opacity: 0 }}
+                    className="flex items-center gap-2 p-2 bg-[#12161f] border-2 border-[#38bdf8]/60 rounded-3xl shadow-2xl shadow-emerald-500/10"
+                  >
+                    {/* Minimized Dot (Leftmost) */}
+                    <motion.button
+                      whileHover={{ scale: 1.05, backgroundColor: '#1e293b' }}
+                      whileTap={{ scale: 0.95 }}
+                      onClick={() => setIsExpanded(true)}
+                      className="w-12 h-12 rounded-2xl flex items-center justify-center cursor-pointer text-white bg-zinc-800/80 border border-zinc-700"
+                      title="Click to expand full NavPad"
+                    >
+                      <div className="w-3.5 h-3.5 bg-white rounded-full animate-pulse" />
+                    </motion.button>
+
+                    {/* Left Arrow */}
+                    <motion.button
+                      whileHover={{ scale: 1.05, backgroundColor: '#1e293b' }}
+                      whileTap={{ scale: 0.95 }}
+                      className="w-12 h-12 rounded-2xl flex items-center justify-center cursor-pointer text-white bg-zinc-800/80 border border-zinc-700"
+                      title="Left Arrow"
+                    >
+                      <ChevronLeft className="w-5 h-5" />
+                    </motion.button>
+
+                    {/* Play/Pause Space Bar */}
+                    <motion.button
+                      whileHover={{ scale: 1.05, backgroundColor: '#065f46' }}
+                      whileTap={{ scale: 0.95 }}
+                      onClick={() => setIsPlaying(!isPlaying)}
+                      className="w-14 h-12 rounded-2xl flex items-center justify-center cursor-pointer text-white bg-emerald-500/20 border border-emerald-500/50"
+                      title="Play / Pause Space"
+                    >
+                      {isPlaying ? <Pause className="w-5 h-5 fill-current text-emerald-400" /> : <Play className="w-5 h-5 fill-current text-emerald-400" />}
+                    </motion.button>
+
+                    {/* Right Arrow */}
+                    <motion.button
+                      whileHover={{ scale: 1.05, backgroundColor: '#1e293b' }}
+                      whileTap={{ scale: 0.95 }}
+                      className="w-12 h-12 rounded-2xl flex items-center justify-center cursor-pointer text-white bg-zinc-800/80 border border-zinc-700"
+                      title="Right Arrow"
+                    >
+                      <ChevronRight className="w-5 h-5" />
+                    </motion.button>
+                  </motion.div>
+                ) : (
+                  <motion.div 
+                    key="expanded"
+                    layoutId="pad"
+                    initial={{ scale: 0.9, opacity: 0 }}
+                    animate={{ scale: 1, opacity: 1 }}
+                    exit={{ scale: 0.9, opacity: 0 }}
+                    className="relative w-80 h-[540px] bg-[#121212] rounded-[36px] border-2 border-zinc-700 shadow-2xl flex flex-col items-center justify-center p-6"
+                  >
+                    <div className="grid grid-cols-4 gap-2 w-full mb-3">
+                      {/* Row 0 */}
+                      <PreviewButton label="Z-" color="text-red-400" borderColor="border-zinc-800" />
+                      <PreviewButton icon={<ChevronUp className="w-5 h-5" />} color="text-emerald-400" borderColor="border-zinc-800" />
+                      <PreviewButton label="Z+" color="text-blue-400" borderColor="border-zinc-800" />
+                      <PreviewButton label="BKSP" color="text-orange-400" borderColor="border-zinc-800" />
+
+                      {/* Row 1 */}
+                      <PreviewButton icon={<ChevronLeft className="w-5 h-5" />} color="text-emerald-400" borderColor="border-zinc-800" />
+                      <div className="contents cursor-pointer" onClick={() => setIsPlaying(!isPlaying)}>
+                        <PreviewButton icon={isPlaying ? <Pause className="w-5 h-5 fill-current" /> : <Play className="w-5 h-5 fill-current" />} color="text-white" borderColor="border-zinc-800" />
+                      </div>
+                      <PreviewButton icon={<ChevronRight className="w-5 h-5" />} color="text-emerald-400" borderColor="border-zinc-800" />
+                      <PreviewButton label="ENT" color="text-orange-400" borderColor="border-zinc-800" />
+
+                      {/* Row 2 */}
+                      <PreviewButton label="A-" color="text-red-400" borderColor="border-zinc-800" />
+                      <PreviewButton icon={<ChevronDown className="w-5 h-5" />} color="text-emerald-400" borderColor="border-zinc-800" />
+                      <PreviewButton label="A+" color="text-blue-400" borderColor="border-zinc-800" />
+                      <PreviewButton label="A+S" color="text-orange-400" borderColor="border-zinc-800" />
+
+                      {/* Row 3: Custom Mappable Buttons Row 1 */}
+                      <PreviewButton label="PRT" color="text-purple-400" borderColor="border-zinc-800" />
+                      <PreviewButton label="ESC" color="text-purple-400" borderColor="border-zinc-800" />
+                      <PreviewButton label="W+A" color="text-purple-400" borderColor="border-zinc-800" />
+                      <PreviewButton label="A+SS" color="text-purple-400" borderColor="border-zinc-800" />
+
+                      {/* Row 4: Custom Mappable Buttons Row 2 */}
+                      <PreviewButton label="W+B" color="text-purple-400" borderColor="border-zinc-800" />
+                      <PreviewButton label="C+ES" color="text-purple-400" borderColor="border-zinc-800" />
+                      <PreviewButton label="F" color="text-purple-400" borderColor="border-zinc-800" />
+                      <PreviewButton label="W+D" color="text-purple-400" borderColor="border-zinc-800" />
+
+                      {/* Row 5: Custom Mappable Buttons Row 3 */}
+                      <PreviewButton label="CPY" color="text-purple-400" borderColor="border-zinc-800" />
+                      <PreviewButton label="PST" color="text-purple-400" borderColor="border-zinc-800" />
+                      <PreviewButton label="ALL" color="text-purple-400" borderColor="border-zinc-800" />
+                      <PreviewButton label="CUT" color="text-purple-400" borderColor="border-zinc-800" />
+                    </div>
+
+                    {/* Bottom Row: Quit, Theme, and Hide buttons */}
+                    <div className="flex gap-2 w-full mt-3">
+                      <motion.button
+                        whileHover={{ scale: 1.05, backgroundColor: '#1a1a1a' }}
+                        whileTap={{ scale: 0.95 }}
+                        className="flex-1 py-2 rounded-2xl bg-zinc-900 border border-red-500/50 text-red-500 text-[9px] font-bold uppercase tracking-wider"
+                      >
+                        Quit
+                      </motion.button>
+                      <motion.button
+                        whileHover={{ scale: 1.05, backgroundColor: '#1a1a1a' }}
+                        whileTap={{ scale: 0.95 }}
+                        className="flex-[1.5] py-2 rounded-2xl bg-zinc-900 border border-blue-500/50 text-blue-400 text-[9px] font-bold uppercase tracking-wider"
+                      >
+                        Theme
+                      </motion.button>
+                      <motion.button
+                        whileHover={{ scale: 1.05, backgroundColor: '#1a1a1a' }}
+                        whileTap={{ scale: 0.95 }}
+                        onClick={() => setIsExpanded(false)}
+                        className="flex-1 py-2 rounded-2xl bg-zinc-900 border border-emerald-500/50 text-emerald-500 text-[9px] font-bold uppercase tracking-wider"
+                      >
+                        Hide
+                      </motion.button>
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
+          </div>
+        )}
+
+        {/* Tab 2: GitHub Screenshots Gallery */}
+        {activeTab === 'screenshots' && (
+          <div className="space-y-8">
+            <div className="flex flex-wrap items-center justify-between gap-4">
+              <div>
+                <h2 className="text-2xl font-bold text-white">GitHub Repository Screenshots</h2>
+                <p className="text-sm text-zinc-400 mt-1">
+                  High-resolution vector screenshots created in <code className="text-emerald-400 font-mono">docs/screenshots/</code> for GitHub README preview.
+                </p>
+              </div>
+              <div className="flex items-center gap-2">
+                <span className="px-3 py-1 rounded-full text-xs font-mono bg-zinc-800 border border-zinc-700 text-zinc-300">
+                  1200 × 675 SVG (Lossless)
+                </span>
+              </div>
+            </div>
+
+            <div className="grid md:grid-cols-2 gap-8">
+              {/* Screenshot 1 */}
+              <div className="rounded-2xl bg-zinc-900/60 border border-zinc-800 overflow-hidden shadow-xl">
+                <div className="px-5 py-3 border-b border-zinc-800 flex items-center justify-between bg-zinc-900">
+                  <span className="text-xs font-mono font-medium text-emerald-400">docs/screenshots/navpad_expanded.svg</span>
+                  <span className="text-[11px] px-2 py-0.5 rounded bg-zinc-800 text-zinc-400">Expanded 4×6 Grid</span>
+                </div>
+                <div className="p-3 bg-black/40">
+                  <img 
+                    src="/docs/screenshots/navpad_expanded.svg" 
+                    alt="Expanded Mode Screenshot" 
+                    className="w-full h-auto rounded-lg border border-zinc-800 shadow"
+                  />
+                </div>
+                <div className="p-4 text-xs text-zinc-400">
+                  Visualizes the full 24-key obsidian controller with Column 4 shortcuts (<code className="text-zinc-200">BKSP, ENT, A+S, A+SS</code>) floating over an active application.
+                </div>
+              </div>
+
+              {/* Screenshot 2 */}
+              <div className="rounded-2xl bg-zinc-900/60 border border-zinc-800 overflow-hidden shadow-xl">
+                <div className="px-5 py-3 border-b border-zinc-800 flex items-center justify-between bg-zinc-900">
+                  <span className="text-xs font-mono font-medium text-emerald-400">docs/screenshots/navpad_minimized.svg</span>
+                  <span className="text-[11px] px-2 py-0.5 rounded bg-zinc-800 text-zinc-400">Assistive Touch Pill</span>
+                </div>
+                <div className="p-3 bg-black/40">
+                  <img 
+                    src="/docs/screenshots/navpad_minimized.svg" 
+                    alt="Minimized Mode Screenshot" 
+                    className="w-full h-auto rounded-lg border border-zinc-800 shadow"
+                  />
+                </div>
+                <div className="p-4 text-xs text-zinc-400">
+                  Visualizes the minimized Assistive Touch floating pill with inline seek, skip, and spacebar play/pause controls.
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Tab 3: GitHub Upload & EXE Release Guide */}
+        {activeTab === 'guide' && (
+          <div className="space-y-8">
+            <div className="space-y-2">
+              <h2 className="text-2xl font-bold text-white">GitHub Upload & Windows EXE Release Guide</h2>
+              <p className="text-sm text-zinc-400">
+                Everything is configured so anyone visiting your GitHub repository can download <code className="text-emerald-400">NavPad-v2.16.exe</code> directly from the Releases page.
+              </p>
+            </div>
+
+            {/* Step 1: Upload to GitHub */}
+            <div className="p-6 rounded-2xl bg-zinc-900/60 border border-zinc-800 space-y-4">
+              <h3 className="font-semibold text-white flex items-center gap-2">
+                <Github className="w-5 h-5 text-emerald-400" />
+                Step 1: Push Repository to GitHub
+              </h3>
+              <p className="text-xs text-zinc-400">
+                In your terminal or PowerShell inside the project directory, run:
+              </p>
+              <pre className="p-4 rounded-xl bg-black/70 border border-zinc-800 font-mono text-xs text-emerald-300 overflow-x-auto leading-relaxed">
+{`git init
+git add .
+git commit -m "feat: Floating NavPad v2.16 with Watchdog Topmost and updated shortcuts"
+git branch -M main
+git remote add origin https://github.com/<your-username>/floating-navpad.git
+git push -u origin main
+git tag v2.16
+git push origin v2.16`}
+              </pre>
+            </div>
+
+            {/* Step 2: Automated GitHub Actions EXE Release */}
+            <div className="p-6 rounded-2xl bg-zinc-900/60 border border-zinc-800 space-y-4">
+              <h3 className="font-semibold text-white flex items-center gap-2">
+                <Sparkles className="w-5 h-5 text-emerald-400" />
+                Step 2: Automated Windows EXE Build on GitHub
+              </h3>
+              <p className="text-xs text-zinc-400 leading-relaxed">
+                We added <code className="text-emerald-400 font-mono">.github/workflows/build-release.yml</code> to this project. When you push the tag <code className="text-emerald-400 font-mono">v2.16</code>, GitHub Actions automatically:
+              </p>
+              <ul className="text-xs text-zinc-300 space-y-2 list-disc list-inside">
+                <li>Spins up a native Windows 2022/2025 virtual machine</li>
+                <li>Installs Python 3.11 and PyInstaller</li>
+                <li>Compiles <code className="text-emerald-400 font-mono">navpad.py</code> into a single, standalone <code className="text-emerald-400 font-mono">NavPad-v2.16.exe</code></li>
+                <li>Creates a GitHub Release titled <strong className="text-white">Floating NavPad v2.16</strong> with the EXE attached!</li>
+              </ul>
+              <div className="p-3 rounded-lg bg-emerald-500/10 border border-emerald-500/20 text-xs text-emerald-300">
+                ✅ Anyone visiting your GitHub repo can click "Releases" → download <strong>NavPad-v2.16.exe</strong> and run it without installing Python!
+              </div>
+            </div>
+
+            {/* Step 3: Local Offline EXE Build */}
+            <div className="p-6 rounded-2xl bg-zinc-900/60 border border-zinc-800 space-y-4">
+              <h3 className="font-semibold text-white flex items-center gap-2">
+                <FolderDown className="w-5 h-5 text-emerald-400" />
+                Step 3: Building EXE Locally on your Windows PC
+              </h3>
+              <p className="text-xs text-zinc-400">
+                You can also compile it locally anytime with zero hassle:
+              </p>
+              <div className="grid sm:grid-cols-2 gap-4">
+                <div className="p-4 rounded-xl bg-black/40 border border-zinc-800 space-y-2">
+                  <span className="text-xs font-bold text-white block">Method A: Double-Click Batch File</span>
+                  <p className="text-xs text-zinc-400">
+                    Double-click <code className="text-emerald-400">build_exe.bat</code> in File Explorer. It installs dependencies and opens the output folder automatically.
+                  </p>
+                  <button 
+                    onClick={handleDownloadBatch}
+                    className="text-xs text-emerald-400 hover:text-emerald-300 font-bold flex items-center gap-1 pt-1"
+                  >
+                    <Download className="w-3.5 h-3.5" />
+                    Download build_exe.bat
+                  </button>
                 </div>
 
-                {/* Bottom Row: Quit, Theme, and Hide buttons */}
-                <div className="flex gap-2 w-full mt-4">
-                  <motion.button
-                    whileHover={{ scale: 1.05, backgroundColor: '#1a1a1a' }}
-                    whileTap={{ scale: 0.95 }}
-                    className="flex-1 py-1.5 rounded-2xl bg-zinc-900 border border-red-500/50 text-red-500 text-[9px] font-bold uppercase tracking-wider"
-                  >
-                    Quit
-                  </motion.button>
-                  <motion.button
-                    whileHover={{ scale: 1.05, backgroundColor: '#1a1a1a' }}
-                    whileTap={{ scale: 0.95 }}
-                    className="flex-[1.5] py-1.5 rounded-2xl bg-zinc-900 border border-blue-500/50 text-blue-400 text-[9px] font-bold uppercase tracking-wider"
-                  >
-                    Theme
-                  </motion.button>
-                  <motion.button
-                    whileHover={{ scale: 1.05, backgroundColor: '#1a1a1a' }}
-                    whileTap={{ scale: 0.95 }}
-                    onClick={() => setIsExpanded(false)}
-                    className="flex-1 py-1.5 rounded-2xl bg-zinc-900 border border-emerald-500/50 text-emerald-500 text-[9px] font-bold uppercase tracking-wider"
-                  >
-                    Hide
-                  </motion.button>
+                <div className="p-4 rounded-xl bg-black/40 border border-zinc-800 space-y-2">
+                  <span className="text-xs font-bold text-white block">Method B: Terminal Command</span>
+                  <code className="text-[11px] block bg-black p-2 rounded text-emerald-300 border border-zinc-800">
+                    python -m PyInstaller --onefile --noconsole --name "NavPad-v2.16" navpad.py
+                  </code>
+                  <p className="text-[11px] text-zinc-400">
+                    Output will be saved in <code className="text-zinc-300">dist\NavPad-v2.16.exe</code>.
+                  </p>
                 </div>
-              </motion.div>
-            )}
-          </AnimatePresence>
-        </div>
+              </div>
+            </div>
+
+          </div>
+        )}
+
       </main>
 
-      {/* Code Snippet Footer */}
-      <footer className="max-w-6xl mx-auto px-6 pb-24">
-        <div className="bg-zinc-900/50 border border-zinc-800 rounded-2xl overflow-hidden">
-          <div className="px-6 py-4 border-b border-zinc-800 flex justify-between items-center bg-zinc-900">
-            <div className="flex items-center gap-2">
-              <div className="w-2 h-2 rounded-full bg-emerald-500" />
-              <span className="text-xs font-mono text-zinc-400">navpad.py</span>
+      {/* Code Viewer Section */}
+      <section className="max-w-6xl mx-auto px-6 pb-20">
+        <div className="bg-zinc-900/60 border border-zinc-800 rounded-2xl overflow-hidden shadow-2xl">
+          <div className="px-6 py-4 border-b border-zinc-800 flex flex-wrap justify-between items-center gap-4 bg-zinc-900">
+            <div className="flex items-center gap-3">
+              <div className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-ping" />
+              <div>
+                <span className="text-xs font-mono font-bold text-white">navpad.py</span>
+                <span className="text-[11px] font-mono text-zinc-500 ml-2">Version 2.16 • Standalone Source</span>
+              </div>
             </div>
-            <button onClick={handleCopy} className="text-xs text-emerald-400 hover:text-emerald-300 transition-colors font-bold">
-              {copied ? 'Copied!' : 'Copy Code'}
-            </button>
+            
+            <div className="flex items-center gap-2">
+              <button 
+                onClick={handleDownloadPython} 
+                className="px-3 py-1.5 rounded-lg bg-zinc-800 hover:bg-zinc-700 text-xs font-semibold text-zinc-200 transition-colors flex items-center gap-1.5 border border-zinc-700"
+              >
+                <Download className="w-3.5 h-3.5 text-emerald-400" />
+                Download .py
+              </button>
+              <button 
+                onClick={handleCopy} 
+                className="px-3 py-1.5 rounded-lg bg-emerald-500/20 hover:bg-emerald-500/30 text-xs font-bold text-emerald-300 transition-colors flex items-center gap-1.5 border border-emerald-500/30"
+              >
+                {copied ? <Check className="w-3.5 h-3.5" /> : <Copy className="w-3.5 h-3.5" />}
+                {copied ? 'Copied!' : 'Copy Code'}
+              </button>
+            </div>
           </div>
-          <pre className="p-8 text-sm font-mono text-zinc-400 overflow-x-auto leading-relaxed">
+          <pre className="p-6 text-xs font-mono text-zinc-400 overflow-x-auto leading-relaxed max-h-[500px]">
             {PYTHON_CODE}
           </pre>
         </div>
-      </footer>
+      </section>
     </div>
   );
 }
@@ -1501,9 +1796,10 @@ function PreviewButton({ icon, label, color, borderColor }: { icon?: React.React
   return (
     <motion.div
       whileHover={{ scale: 1.05, backgroundColor: '#18181b' }}
-      className={`aspect-square flex items-center justify-center rounded-[18px] bg-zinc-900 border ${finalBorder} ${color} shadow-lg cursor-pointer`}
+      className={`aspect-square flex items-center justify-center rounded-[18px] bg-zinc-900 border ${finalBorder} ${color} shadow-lg cursor-pointer select-none`}
     >
       {icon || <span className="text-[10px] font-bold">{label}</span>}
     </motion.div>
   );
 }
+

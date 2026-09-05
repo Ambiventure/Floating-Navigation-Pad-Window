@@ -1,0 +1,269 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 675" width="100%" height="100%">
+  <defs>
+    <!-- Background Gradient -->
+    <radialGradient id="bgGrad" cx="50%" cy="30%" r="80%">
+      <stop offset="0%" stop-color="#141923" />
+      <stop offset="50%" stop-color="#0b0e14" />
+      <stop offset="100%" stop-color="#05070a" />
+    </radialGradient>
+
+    <!-- Glow filters -->
+    <filter id="glowCyan" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="15" result="blur" />
+      <feComposite in="SourceGraphic" in2="blur" operator="over" />
+    </filter>
+    <filter id="shadowPad" x="-30%" y="-30%" width="160%" height="160%">
+      <feDropShadow dx="0" dy="16" stdDeviation="28" flood-color="#000000" flood-opacity="0.85" />
+      <feDropShadow dx="0" dy="4" stdDeviation="10" flood-color="#10b981" flood-opacity="0.2" />
+    </filter>
+    <filter id="buttonShadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="2" stdDeviation="3" flood-color="#000000" flood-opacity="0.6" />
+    </filter>
+
+    <linearGradient id="padBorderGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#3b4252" />
+      <stop offset="50%" stop-color="#1f2430" />
+      <stop offset="100%" stop-color="#2e3440" />
+    </linearGradient>
+
+    <linearGradient id="headerGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#10b981" />
+      <stop offset="100%" stop-color="#38bdf8" />
+    </linearGradient>
+
+    <linearGradient id="keyGreen" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#1f2e24" />
+      <stop offset="100%" stop-color="#141e18" />
+    </linearGradient>
+    <linearGradient id="keyOrange" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#312217" />
+      <stop offset="100%" stop-color="#1e1610" />
+    </linearGradient>
+    <linearGradient id="keyPurple" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#2a1b38" />
+      <stop offset="100%" stop-color="#181122" />
+    </linearGradient>
+  </defs>
+
+  <!-- Desktop Background -->
+  <rect width="1200" height="675" fill="url(#bgGrad)" />
+
+  <!-- Grid overlay in background to simulate workspace/code editor -->
+  <g opacity="0.12" stroke="#4ade80" stroke-width="0.5">
+    <line x1="0" y1="100" x2="1200" y2="100" />
+    <line x1="0" y1="200" x2="1200" y2="200" />
+    <line x1="0" y1="300" x2="1200" y2="300" />
+    <line x1="0" y1="400" x2="1200" y2="400" />
+    <line x1="0" y1="500" x2="1200" y2="500" />
+    <line x1="0" y1="600" x2="1200" y2="600" />
+    <line x1="200" y1="0" x2="200" y2="675" />
+    <line x1="400" y1="0" x2="400" y2="675" />
+    <line x1="600" y1="0" x2="600" y2="675" />
+    <line x1="800" y1="0" x2="800" y2="675" />
+    <line x1="1000" y1="0" x2="1000" y2="675" />
+  </g>
+
+  <!-- Ambient Light Orbs -->
+  <circle cx="280" cy="180" r="140" fill="#10b981" opacity="0.08" filter="url(#glowCyan)" />
+  <circle cx="950" cy="460" r="180" fill="#0284c7" opacity="0.08" filter="url(#glowCyan)" />
+
+  <!-- Left Side: Informational Showcase -->
+  <g transform="translate(80, 110)">
+    <rect x="0" y="0" width="130" height="28" rx="14" fill="#10b981" fill-opacity="0.15" stroke="#10b981" stroke-opacity="0.4" />
+    <text x="65" y="19" fill="#34d399" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="12" font-weight="700" text-anchor="middle" letter-spacing="1">VERSION 2.16</text>
+
+    <text x="0" y="80" fill="#ffffff" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="44" font-weight="800" letter-spacing="-1">
+      Floating NavPad
+    </text>
+    <text x="0" y="125" fill="url(#headerGrad)" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="34" font-weight="700" letter-spacing="-0.5">
+      Picture-in-Picture Automation
+    </text>
+    <text x="0" y="170" fill="#94a3b8" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="16" font-weight="400">
+      Universal on-screen controller for Windows media,
+    </text>
+    <text x="0" y="195" fill="#94a3b8" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="16" font-weight="400">
+      navigation, gaming, and custom keyboard macros.
+    </text>
+
+    <!-- Feature highlights pills -->
+    <g transform="translate(0, 240)">
+      <!-- Feature 1 -->
+      <g transform="translate(0, 0)">
+        <rect width="360" height="52" rx="12" fill="#131822" stroke="#1e293b" />
+        <circle cx="28" cy="26" r="14" fill="#10b981" fill-opacity="0.2" />
+        <path d="M 23 26 L 27 30 L 33 22" fill="none" stroke="#34d399" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+        <text x="54" y="24" fill="#f1f5f9" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="14" font-weight="600">Anti-Interference Topmost Watchdog</text>
+        <text x="54" y="40" fill="#64748b" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="12">Never loses PiP status behind Chrome menus</text>
+      </g>
+      <!-- Feature 2 -->
+      <g transform="translate(0, 64)">
+        <rect width="360" height="52" rx="12" fill="#131822" stroke="#1e293b" />
+        <circle cx="28" cy="26" r="14" fill="#38bdf8" fill-opacity="0.2" />
+        <path d="M 23 26 L 27 30 L 33 22" fill="none" stroke="#38bdf8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+        <text x="54" y="24" fill="#f1f5f9" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="14" font-weight="600">Column 4 Updated Shortcuts</text>
+        <text x="54" y="40" fill="#64748b" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="12">Backspace, Enter, Alt+S, Alt+Shift+S presets</text>
+      </g>
+      <!-- Feature 3 -->
+      <g transform="translate(0, 128)">
+        <rect width="360" height="52" rx="12" fill="#131822" stroke="#1e293b" />
+        <circle cx="28" cy="26" r="14" fill="#c084fc" fill-opacity="0.2" />
+        <path d="M 23 26 L 27 30 L 33 22" fill="none" stroke="#c084fc" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+        <text x="54" y="24" fill="#f1f5f9" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="14" font-weight="600">Zero Focus Stealing</text>
+        <text x="54" y="40" fill="#64748b" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="12">Direct hardware key events without pausing games</text>
+      </g>
+    </g>
+
+    <!-- Download Badge -->
+    <g transform="translate(0, 445)">
+      <rect width="210" height="42" rx="21" fill="#10b981" />
+      <text x="105" y="26" fill="#000000" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="14" font-weight="700" text-anchor="middle">Standalone EXE Included</text>
+    </g>
+  </g>
+
+  <!-- Right Side: The NavPad v2.16 Device (Expanded View) -->
+  <g transform="translate(740, 55)" filter="url(#shadowPad)">
+    <!-- Outer Hardware Shell -->
+    <rect x="0" y="0" width="370" height="565" rx="36" fill="#101318" stroke="url(#padBorderGrad)" stroke-width="2" />
+    <!-- Inner Screen Bezel -->
+    <rect x="14" y="14" width="342" height="537" rx="26" fill="#0d1015" />
+
+    <!-- Window Drag Bar Indicator -->
+    <rect x="155" y="24" width="60" height="4" rx="2" fill="#334155" />
+
+    <!-- Pad Grid Container (4 cols x 6 rows) -->
+    <g transform="translate(26, 42)">
+      <!-- ROW 0 -->
+      <!-- Z- (Zoom Out) -->
+      <g transform="translate(0, 0)" filter="url(#buttonShadow)">
+        <rect width="70" height="68" rx="16" fill="#1c1618" stroke="#ef4444" stroke-opacity="0.5" stroke-width="1.2" />
+        <text x="35" y="40" fill="#f87171" font-family="'Segoe UI', Roboto, sans-serif" font-size="16" font-weight="700" text-anchor="middle">Z-</text>
+      </g>
+      <!-- Up Arrow -->
+      <g transform="translate(80, 0)" filter="url(#buttonShadow)">
+        <rect width="70" height="68" rx="16" fill="url(#keyGreen)" stroke="#10b981" stroke-opacity="0.6" stroke-width="1.2" />
+        <path d="M 35 25 L 47 39 L 23 39 Z" fill="#34d399" />
+      </g>
+      <!-- Z+ (Zoom In) -->
+      <g transform="translate(160, 0)" filter="url(#buttonShadow)">
+        <rect width="70" height="68" rx="16" fill="#141c2b" stroke="#38bdf8" stroke-opacity="0.5" stroke-width="1.2" />
+        <text x="35" y="40" fill="#38bdf8" font-family="'Segoe UI', Roboto, sans-serif" font-size="16" font-weight="700" text-anchor="middle">Z+</text>
+      </g>
+      <!-- BKSP (Column 4 - 1: Backspace) -->
+      <g transform="translate(240, 0)" filter="url(#buttonShadow)">
+        <rect width="78" height="68" rx="16" fill="url(#keyOrange)" stroke="#f97316" stroke-opacity="0.8" stroke-width="1.5" />
+        <text x="39" y="40" fill="#fb923c" font-family="'Segoe UI', Roboto, sans-serif" font-size="15" font-weight="800" text-anchor="middle">BKSP</text>
+      </g>
+
+      <!-- ROW 1 -->
+      <!-- Left Arrow -->
+      <g transform="translate(0, 76)" filter="url(#buttonShadow)">
+        <rect width="70" height="68" rx="16" fill="url(#keyGreen)" stroke="#10b981" stroke-opacity="0.6" stroke-width="1.2" />
+        <path d="M 26 34 L 40 22 L 40 46 Z" fill="#34d399" />
+      </g>
+      <!-- Center Play/Pause -->
+      <g transform="translate(80, 76)" filter="url(#buttonShadow)">
+        <rect width="70" height="68" rx="16" fill="#20242f" stroke="#475569" stroke-width="1.5" />
+        <path d="M 28 26 L 44 34 L 28 42 Z" fill="#ffffff" />
+      </g>
+      <!-- Right Arrow -->
+      <g transform="translate(160, 76)" filter="url(#buttonShadow)">
+        <rect width="70" height="68" rx="16" fill="url(#keyGreen)" stroke="#10b981" stroke-opacity="0.6" stroke-width="1.2" />
+        <path d="M 44 34 L 30 22 L 30 46 Z" fill="#34d399" />
+      </g>
+      <!-- ENT (Column 4 - 2: Enter) -->
+      <g transform="translate(240, 76)" filter="url(#buttonShadow)">
+        <rect width="78" height="68" rx="16" fill="url(#keyOrange)" stroke="#f97316" stroke-opacity="0.8" stroke-width="1.5" />
+        <text x="39" y="40" fill="#fb923c" font-family="'Segoe UI', Roboto, sans-serif" font-size="15" font-weight="800" text-anchor="middle">ENT</text>
+      </g>
+
+      <!-- ROW 2 -->
+      <!-- A- (Opacity down) -->
+      <g transform="translate(0, 152)" filter="url(#buttonShadow)">
+        <rect width="70" height="68" rx="16" fill="#1c1618" stroke="#ef4444" stroke-opacity="0.5" stroke-width="1.2" />
+        <text x="35" y="40" fill="#f87171" font-family="'Segoe UI', Roboto, sans-serif" font-size="16" font-weight="700" text-anchor="middle">A-</text>
+      </g>
+      <!-- Down Arrow -->
+      <g transform="translate(80, 152)" filter="url(#buttonShadow)">
+        <rect width="70" height="68" rx="16" fill="url(#keyGreen)" stroke="#10b981" stroke-opacity="0.6" stroke-width="1.2" />
+        <path d="M 35 43 L 23 29 L 47 29 Z" fill="#34d399" />
+      </g>
+      <!-- A+ (Opacity up) -->
+      <g transform="translate(160, 152)" filter="url(#buttonShadow)">
+        <rect width="70" height="68" rx="16" fill="#141c2b" stroke="#38bdf8" stroke-opacity="0.5" stroke-width="1.2" />
+        <text x="35" y="40" fill="#38bdf8" font-family="'Segoe UI', Roboto, sans-serif" font-size="16" font-weight="700" text-anchor="middle">A+</text>
+      </g>
+      <!-- A+S (Column 4 - 3: Alt+S) -->
+      <g transform="translate(240, 152)" filter="url(#buttonShadow)">
+        <rect width="78" height="68" rx="16" fill="url(#keyOrange)" stroke="#f97316" stroke-opacity="0.8" stroke-width="1.5" />
+        <text x="39" y="40" fill="#fb923c" font-family="'Segoe UI', Roboto, sans-serif" font-size="15" font-weight="800" text-anchor="middle">A+S</text>
+      </g>
+
+      <!-- ROW 3 (Macros row 1) -->
+      <g transform="translate(0, 228)" filter="url(#buttonShadow)">
+        <rect width="70" height="68" rx="16" fill="url(#keyPurple)" stroke="#a855f7" stroke-opacity="0.5" stroke-width="1.2" />
+        <text x="35" y="40" fill="#c084fc" font-family="'Segoe UI', Roboto, sans-serif" font-size="14" font-weight="700" text-anchor="middle">PRT</text>
+      </g>
+      <g transform="translate(80, 228)" filter="url(#buttonShadow)">
+        <rect width="70" height="68" rx="16" fill="url(#keyPurple)" stroke="#a855f7" stroke-opacity="0.5" stroke-width="1.2" />
+        <text x="35" y="40" fill="#c084fc" font-family="'Segoe UI', Roboto, sans-serif" font-size="14" font-weight="700" text-anchor="middle">ESC</text>
+      </g>
+      <g transform="translate(160, 228)" filter="url(#buttonShadow)">
+        <rect width="70" height="68" rx="16" fill="url(#keyPurple)" stroke="#a855f7" stroke-opacity="0.5" stroke-width="1.2" />
+        <text x="35" y="40" fill="#c084fc" font-family="'Segoe UI', Roboto, sans-serif" font-size="14" font-weight="700" text-anchor="middle">W+A</text>
+      </g>
+      <!-- A+SS (Column 4 - 4: Alt+Shift+S) -->
+      <g transform="translate(240, 228)" filter="url(#buttonShadow)">
+        <rect width="78" height="68" rx="16" fill="url(#keyPurple)" stroke="#a855f7" stroke-opacity="0.9" stroke-width="1.5" />
+        <text x="39" y="40" fill="#e9d5ff" font-family="'Segoe UI', Roboto, sans-serif" font-size="14" font-weight="800" text-anchor="middle">A+SS</text>
+      </g>
+
+      <!-- ROW 4 (Macros row 2) -->
+      <g transform="translate(0, 304)" filter="url(#buttonShadow)">
+        <rect width="70" height="68" rx="16" fill="url(#keyPurple)" stroke="#a855f7" stroke-opacity="0.5" stroke-width="1.2" />
+        <text x="35" y="40" fill="#c084fc" font-family="'Segoe UI', Roboto, sans-serif" font-size="14" font-weight="700" text-anchor="middle">W+B</text>
+      </g>
+      <g transform="translate(80, 304)" filter="url(#buttonShadow)">
+        <rect width="70" height="68" rx="16" fill="url(#keyPurple)" stroke="#a855f7" stroke-opacity="0.5" stroke-width="1.2" />
+        <text x="35" y="40" fill="#c084fc" font-family="'Segoe UI', Roboto, sans-serif" font-size="14" font-weight="700" text-anchor="middle">C+ES</text>
+      </g>
+      <g transform="translate(160, 304)" filter="url(#buttonShadow)">
+        <rect width="70" height="68" rx="16" fill="url(#keyPurple)" stroke="#a855f7" stroke-opacity="0.5" stroke-width="1.2" />
+        <text x="35" y="40" fill="#c084fc" font-family="'Segoe UI', Roboto, sans-serif" font-size="14" font-weight="700" text-anchor="middle">F</text>
+      </g>
+      <g transform="translate(240, 304)" filter="url(#buttonShadow)">
+        <rect width="78" height="68" rx="16" fill="url(#keyPurple)" stroke="#a855f7" stroke-opacity="0.5" stroke-width="1.2" />
+        <text x="39" y="40" fill="#c084fc" font-family="'Segoe UI', Roboto, sans-serif" font-size="14" font-weight="700" text-anchor="middle">W+D</text>
+      </g>
+
+      <!-- ROW 5 (Macros row 3 - Clipboard) -->
+      <g transform="translate(0, 380)" filter="url(#buttonShadow)">
+        <rect width="70" height="68" rx="16" fill="url(#keyPurple)" stroke="#a855f7" stroke-opacity="0.5" stroke-width="1.2" />
+        <text x="35" y="40" fill="#c084fc" font-family="'Segoe UI', Roboto, sans-serif" font-size="14" font-weight="700" text-anchor="middle">CPY</text>
+      </g>
+      <g transform="translate(80, 380)" filter="url(#buttonShadow)">
+        <rect width="70" height="68" rx="16" fill="url(#keyPurple)" stroke="#a855f7" stroke-opacity="0.5" stroke-width="1.2" />
+        <text x="35" y="40" fill="#c084fc" font-family="'Segoe UI', Roboto, sans-serif" font-size="14" font-weight="700" text-anchor="middle">PST</text>
+      </g>
+      <g transform="translate(160, 380)" filter="url(#buttonShadow)">
+        <rect width="70" height="68" rx="16" fill="url(#keyPurple)" stroke="#a855f7" stroke-opacity="0.5" stroke-width="1.2" />
+        <text x="35" y="40" fill="#c084fc" font-family="'Segoe UI', Roboto, sans-serif" font-size="14" font-weight="700" text-anchor="middle">ALL</text>
+      </g>
+      <g transform="translate(240, 380)" filter="url(#buttonShadow)">
+        <rect width="78" height="68" rx="16" fill="url(#keyPurple)" stroke="#a855f7" stroke-opacity="0.5" stroke-width="1.2" />
+        <text x="39" y="40" fill="#c084fc" font-family="'Segoe UI', Roboto, sans-serif" font-size="14" font-weight="700" text-anchor="middle">CUT</text>
+      </g>
+    </g>
+
+    <!-- Bottom Controls: QUIT, THEME, HIDE -->
+    <g transform="translate(26, 502)">
+      <rect x="0" y="0" width="88" height="34" rx="12" fill="#1a1215" stroke="#ef4444" stroke-opacity="0.6" />
+      <text x="44" y="21" fill="#f87171" font-family="'Segoe UI', sans-serif" font-size="11" font-weight="800" text-anchor="middle" letter-spacing="1">QUIT</text>
+
+      <rect x="96" y="0" width="126" height="34" rx="12" fill="#101a28" stroke="#38bdf8" stroke-opacity="0.6" />
+      <text x="159" y="21" fill="#38bdf8" font-family="'Segoe UI', sans-serif" font-size="11" font-weight="800" text-anchor="middle" letter-spacing="1">THEME</text>
+
+      <rect x="230" y="0" width="88" height="34" rx="12" fill="#102219" stroke="#10b981" stroke-opacity="0.6" />
+      <text x="274" y="21" fill="#34d399" font-family="'Segoe UI', sans-serif" font-size="11" font-weight="800" text-anchor="middle" letter-spacing="1">HIDE</text>
+    </g>
+  </g>
+</svg>

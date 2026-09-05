@@ -1,5 +1,8 @@
 {
-  "name": "Floating Nav Pad",
-  "description": "A sleek, draggable overlay for global media and navigation control.",
-  "requestFramePermissions": []
+  "name": "Floating NavPad v2.16",
+  "description": "A sleek, draggable picture-in-picture overlay for global media and navigation control on Windows.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
 }
